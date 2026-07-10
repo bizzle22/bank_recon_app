@@ -354,28 +354,53 @@
             </div>
             <div class="metric info">
                 <span>Interest Income</span>
-                <strong>{{ interest }}</strong>
-                <div class="amount">Rs. {{ interest_amount }}</div>
+                <strong>{{ interest_income }}</strong>
+                <div class="amount">Rs. {{ interest_income_amount }}</div>
             </div>
             <div class="metric warn">
                 <span>Bank Charges</span>
                 <strong>{{ bank_charges }}</strong>
-                <div class="amount">Rs. {{ bank_charge_amount }}</div>
+                <div class="amount">Rs. {{ bank_charges_amount }}</div>
             </div>
             <div class="metric other">
                 <span>Investments</span>
                 <strong>{{ investments }}</strong>
-                <div class="amount">Rs. {{ investment_amount }}</div>
+                <div class="amount">Dr {{ investments_debit_amount }} / Cr {{ investments_credit_amount }}</div>
             </div>
             <div class="metric info">
                 <span>Security Deposits</span>
                 <strong>{{ security_deposits }}</strong>
-                <div class="amount">Rs. {{ security_deposit_amount }}</div>
+                <div class="amount">Rs. {{ security_deposits_amount }}</div>
+            </div>
+            <div class="metric info">
+                <span>Advances Received</span>
+                <strong>{{ advances_received }}</strong>
+                <div class="amount">Rs. {{ advances_received_amount }}</div>
+            </div>
+            <div class="metric risk">
+                <span>Cheque Bounces</span>
+                <strong>{{ cheque_bounce }}</strong>
+                <div class="amount">Rs. {{ cheque_bounce_amount }}</div>
+            </div>
+            <div class="metric risk">
+                <span>Bounce Penalties</span>
+                <strong>{{ bounce_penalty }}</strong>
+                <div class="amount">Rs. {{ bounce_penalty_amount }}</div>
             </div>
             <div class="metric warn">
-                <span>Vendor Transactions</span>
+                <span>Payment Reversals</span>
+                <strong>{{ payment_reversals }}</strong>
+                <div class="amount">Rs. {{ payment_reversals_amount }}</div>
+            </div>
+            <div class="metric risk">
+                <span>Unidentified Receipts</span>
+                <strong>{{ unidentified }}</strong>
+                <div class="amount">Rs. {{ unidentified_amount }}</div>
+            </div>
+            <div class="metric warn">
+                <span>Vendor & Statutory Payments</span>
                 <strong>{{ vendor_transactions }}</strong>
-                <div class="amount">Rs. {{ vendor_amount }}</div>
+                <div class="amount">Rs. {{ vendor_transactions_amount }}</div>
             </div>
             <div class="metric">
                 <span>Total Transactions</span>
@@ -388,10 +413,16 @@
         {% include "reconciliation/table_section.html" with title="Exceptions" table=tables.unmatched %}
         {% include "reconciliation/table_section.html" with title="Matched Receipts" table=tables.matched %}
         {% include "reconciliation/table_section.html" with title="Bank Charges" table=tables.bank_charges %}
-        {% include "reconciliation/table_section.html" with title="Interest Income" table=tables.interest %}
+        {% include "reconciliation/table_section.html" with title="Interest Income" table=tables.interest_income %}
         {% include "reconciliation/table_section.html" with title="Investments" table=tables.investments %}
         {% include "reconciliation/table_section.html" with title="Security Deposits" table=tables.security_deposits %}
-        {% include "reconciliation/table_section.html" with title="Vendor Transactions" table=tables.vendor_transactions %}
+        {% include "reconciliation/table_section.html" with title="Advances Received" table=tables.advances_received %}
+        {% include "reconciliation/table_section.html" with title="Cheque Bounces" table=tables.cheque_bounce %}
+        {% include "reconciliation/table_section.html" with title="Bounce Penalties" table=tables.bounce_penalty %}
+        {% include "reconciliation/table_section.html" with title="Payment Reversals" table=tables.payment_reversals %}
+        {% include "reconciliation/table_section.html" with title="Unidentified Receipts" table=tables.unidentified %}
+        {% include "reconciliation/table_section.html" with title="Vendor & Statutory Payments" table=tables.vendor_transactions %}
+        {% include "reconciliation/table_section.html" with title="EMI Schedule" table=tables.emi_schedule %}
     </main>
 </body>
 

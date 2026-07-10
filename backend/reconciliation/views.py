@@ -26,6 +26,16 @@ PREVIEW_COLUMNS = [
     "Match Score",
     "Match Status",
     "Match Reason",
+    "Invoice No.",
+    "Customer Name",
+    "Total Invoice Amt",
+    "Total EMIs",
+    "EMI No.",
+    "Due Date",
+    "EMI Amt (INR)",
+    "Status",
+    "Payment Date",
+    "Remarks",
 ]
 
 
@@ -71,24 +81,35 @@ def _display_value(value):
 
 
 def _build_context(result):
+    tables = {
+        "matched": _table_payload(result["matched_df"]),
+        "possible": _table_payload(result["possible_df"]),
+        "unmatched": _table_payload(result["unmatched_df"]),
+    }
+    for key in result:
+        if not key.endswith("_df") or key in ("matched_df", "possible_df", "unmatched_df"):
+            continue
+        name = key[: -len("_df")]
+        tables[name] = _table_payload(result[key])
+
     return {
         **result["summary"],
-        "tables": {
-            "matched": _table_payload(result["matched_df"]),
-            "possible": _table_payload(result["possible_df"]),
-            "unmatched": _table_payload(result["unmatched_df"]),
-            "bank_charges": _table_payload(result["bank_charges_df"]),
-            "interest": _table_payload(result["interest_df"]),
-            "investments": _table_payload(result["investment_df"]),
-            "security_deposits": _table_payload(result["security_deposit_df"]),
-            "vendor_transactions": _table_payload(result["vendor_transactions_df"]),
-        },
+        "tables": tables,
     }
 
 
 def home(request):
 
     if request.method == "POST":
+
+        if "bank_file" not in request.FILES or "invoice_file" not in request.FILES:
+            return render(
+                request,
+                "reconciliation/home.html",
+                {
+                    "error": "Please upload both the bank statement and invoice register."
+                }
+            )
 
         try:
             bank_file = request.FILES["bank_file"]
@@ -117,21 +138,12 @@ def home(request):
             context = _build_context(result)
             context["report_ready"] = True
 
-        except KeyError:
-            return render(
-                request,
-                "reconciliation/home.html",
-                {
-                    "error": "Please upload both the bank statement and invoice register."
-                }
-            )
-
         except Exception as exc:
             return render(
                 request,
                 "reconciliation/home.html",
                 {
-                    "error": str(exc)
+                    "error": f"{type(exc).__name__}: {exc}"
                 }
             )
 
